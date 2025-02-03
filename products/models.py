@@ -12,9 +12,11 @@ class Product(TimeStampModel):
     quantity = models.PositiveSmallIntegerField()
 
 
+
 class ProductTag(TimeStampModel):
     name = models.CharField(max_length=255)
     products = models.ManyToManyField('products.Product', related_name='product_tags')
+
 
 
 class Review(TimeStampModel):
@@ -22,3 +24,22 @@ class Review(TimeStampModel):
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE, related_name='reviews')
     content = models.TextField()
     rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+
+
+
+class Cart(TimeStampModel):
+    products = models.ManyToManyField('products.Product', related_name='carts')
+    user = models.OneToOneField('users.User', related_name='cart', on_delete=models.CASCADE)
+
+
+
+class FavoriteProduct(TimeStampModel):
+    product = models.ForeignKey('products.Product', related_name='favorite_product', on_delete=models.CASCADE)
+    users = models.ForeignKey('users.User', related_name='favorite_products', on_delete=models.SET_NULL, null=True, blank=True)
+
+
+
+class ProductImage(TimeStampModel):
+    product = models.ForeignKey('products.Product', related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/')
+
