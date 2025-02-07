@@ -6,7 +6,7 @@ from rest_framework import status
 from products.serializers import (
     ProductModelSerializer,
     ReviewModelSerializer,
-    CartItemSerializer,
+    CartSerializer,
     ProductTagSerializer,
     FavoriteProductSerializer
     )
@@ -45,11 +45,11 @@ def get_product(request, pk):
 def cart_view(request):
     if request.method == 'GET':
         cart_items = Cart.objects.filter(user=request.user)
-        serializer = CartItemSerializer(cart_items, many=True)
+        serializer = CartSerializer(cart_items, many=True)
         return Response(serializer.data)
     
     elif request.method == 'POST':
-        serializer = CartItemSerializer(data=request.data)
+        serializer = CartSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
