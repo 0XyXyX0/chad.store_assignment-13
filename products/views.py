@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from products.models import Product, Review
+from products.models import Product, Review, Cart,
 from rest_framework import status
 from products.serializers import (
     ProductModelSerializer,
@@ -44,7 +44,7 @@ def get_product(request, pk):
 @api_view(['GET', 'POST'])
 def cart_view(request):
     if request.method == 'GET':
-        cart_items = CartItem.objects.filter(user=request.user)
+        cart_items = Cart.objects.filter(user=request.user)
         serializer = CartItemSerializer(cart_items, many=True)
         return Response(serializer.data)
     
@@ -66,7 +66,7 @@ def product_tag_view(request, product_id):
         return Response(serializer.data)
     
     elif request.method == 'POST':
-        request.data['product'] = product_id  # Ensure product_id is included
+        request.data['product'] = product_id
         serializer = ProductTagSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
