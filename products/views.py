@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from products.models import Product, Review, Cart,
+from products.models import Product, Review, Cart, FavoriteProduct, ProductTag
 from rest_framework import status
 from products.serializers import (
     ProductModelSerializer,
